@@ -235,6 +235,24 @@
     /* Avatar geral */
     .avatar { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 500; flex-shrink: 0; }
 
+    /* Hero tiles */
+    #hero-tiles {
+      position: absolute; inset: 0; z-index: 0; overflow: hidden;
+      display: flex; flex-wrap: wrap; pointer-events: none;
+    }
+    .hero-tile {
+      width: 48px; height: 48px; flex-shrink: 0;
+      border-right: 1px solid rgba(26,46,68,0.055);
+      border-bottom: 1px solid rgba(26,46,68,0.055);
+      pointer-events: all;
+      background-color: transparent;
+      transition: background-color 1600ms ease;
+    }
+    .hero-tile:hover {
+      background-color: rgba(184,115,82,0.09);
+      transition: background-color 0ms;
+    }
+
     /* Nav link */
     .nav-link { font-size: 14px; color: #6B7A8D; text-decoration: none; transition: color 220ms ease; }
     .nav-link:hover { color: #1A2E44; }
@@ -326,8 +344,9 @@
 <!-- ══════════════════════════════════════
      HERO
 ══════════════════════════════════════ -->
-<section class="min-h-[100dvh] flex items-center overflow-hidden pt-[62px]">
-  <div class="max-w-[1100px] mx-auto px-6 w-full grid grid-cols-1 md:grid-cols-12 gap-8 items-center py-20 md:py-24">
+<section class="min-h-[100dvh] flex items-center overflow-hidden pt-[62px] relative">
+  <div id="hero-tiles" aria-hidden="true"></div>
+  <div class="max-w-[1100px] mx-auto px-6 w-full grid grid-cols-1 md:grid-cols-12 gap-8 items-center py-20 md:py-24 relative z-10">
 
     <!-- Texto — 8 colunas para caber em 2 linhas -->
     <div class="md:col-span-8 reveal">
@@ -808,6 +827,28 @@
       t.scrollIntoView({ behavior: 'smooth' });
     });
   });
+
+  /* ── Hero tiles ── */
+  function buildHeroTiles() {
+    const container = document.getElementById('hero-tiles');
+    if (!container) return;
+    const section = container.parentElement;
+    const W = section.offsetWidth;
+    const H = section.offsetHeight;
+    const SIZE = 48;
+    const cols = Math.ceil(W / SIZE) + 1;
+    const rows = Math.ceil(H / SIZE) + 1;
+    container.innerHTML = '';
+    container.style.width = (cols * SIZE) + 'px';
+    container.style.height = (rows * SIZE) + 'px';
+    for (let i = 0; i < rows * cols; i++) {
+      const t = document.createElement('div');
+      t.className = 'hero-tile';
+      container.appendChild(t);
+    }
+  }
+  buildHeroTiles();
+  window.addEventListener('resize', buildHeroTiles);
 
   /* ── Scroll reveal ── */
   const io = new IntersectionObserver(
