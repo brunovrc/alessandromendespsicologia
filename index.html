@@ -235,22 +235,12 @@
     /* Avatar geral */
     .avatar { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 500; flex-shrink: 0; }
 
-    /* Hero tiles */
-    #hero-tiles {
-      position: absolute; inset: 0; z-index: 0; overflow: hidden;
-      display: flex; flex-wrap: wrap; pointer-events: none;
-    }
-    .hero-tile {
-      width: 48px; height: 48px; flex-shrink: 0;
-      border-right: 1px solid rgba(26,46,68,0.055);
-      border-bottom: 1px solid rgba(26,46,68,0.055);
-      pointer-events: all;
-      background-color: transparent;
-      transition: background-color 1600ms ease;
-    }
-    .hero-tile:hover {
-      background-color: rgba(184,115,82,0.09);
-      transition: background-color 0ms;
+    /* Hero glow */
+    #hero-glow {
+      position: absolute; inset: 0; z-index: 0; pointer-events: none;
+      background-image: radial-gradient(circle at center, #FFF991 0%, transparent 70%);
+      opacity: 0.6;
+      mix-blend-mode: multiply;
     }
 
     /* Nav — desktop magic-line */
@@ -373,11 +363,11 @@
      HERO
 ══════════════════════════════════════ -->
 <section class="min-h-[100dvh] flex items-center overflow-hidden pt-[62px] relative">
-  <div id="hero-tiles" aria-hidden="true"></div>
+  <div id="hero-glow" aria-hidden="true"></div>
   <div class="max-w-[1100px] mx-auto px-6 w-full grid grid-cols-1 md:grid-cols-12 gap-8 items-center py-20 md:py-24 relative z-10">
 
-    <!-- Texto — 8 colunas para caber em 2 linhas -->
-    <div class="md:col-span-8 reveal">
+    <!-- Texto — 7 colunas -->
+    <div class="md:col-span-7 reveal">
       <p class="text-[12px] font-medium tracking-[1px] text-accent uppercase mb-7">
         Psicoterapia Clínica &nbsp;·&nbsp; Maringá & Online
       </p>
@@ -409,9 +399,9 @@
       </div>
     </div>
 
-    <!-- Foto — 4 colunas -->
-    <div class="md:col-span-4 flex justify-center md:justify-end items-center reveal d2">
-      <div class="relative w-[240px] sm:w-[270px] md:w-[290px] max-w-full">
+    <!-- Foto — 5 colunas -->
+    <div class="md:col-span-5 flex justify-center md:justify-end items-center reveal d2">
+      <div class="relative w-[280px] sm:w-[340px] md:w-[400px] max-w-full">
         <div class="photo-blob-bg absolute -inset-5 bg-accent-soft/20"></div>
         <div class="photo-blob aspect-[0.88] relative z-10 shadow-[0_8px_48px_rgba(26,46,68,0.12)]">
           <img src="foto-hero.png"
@@ -876,27 +866,6 @@
     });
   });
 
-  /* ── Hero tiles ── */
-  function buildHeroTiles() {
-    const container = document.getElementById('hero-tiles');
-    if (!container) return;
-    const section = container.parentElement;
-    const W = section.offsetWidth;
-    const H = section.offsetHeight;
-    const SIZE = 48;
-    const cols = Math.ceil(W / SIZE) + 1;
-    const rows = Math.ceil(H / SIZE) + 1;
-    container.innerHTML = '';
-    container.style.width = (cols * SIZE) + 'px';
-    container.style.height = (rows * SIZE) + 'px';
-    for (let i = 0; i < rows * cols; i++) {
-      const t = document.createElement('div');
-      t.className = 'hero-tile';
-      container.appendChild(t);
-    }
-  }
-  buildHeroTiles();
-  window.addEventListener('resize', buildHeroTiles);
 
   /* ── Scroll reveal ── */
   const io = new IntersectionObserver(
