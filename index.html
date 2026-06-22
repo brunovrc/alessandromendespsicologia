@@ -253,9 +253,32 @@
       transition: background-color 0ms;
     }
 
-    /* Nav link */
-    .nav-link { font-size: 14px; color: #6B7A8D; text-decoration: none; transition: color 220ms ease; }
-    .nav-link:hover { color: #1A2E44; }
+    /* Nav — desktop magic-line */
+    .nav-link {
+      position: relative; font-size: 14px; color: #6B7A8D; text-decoration: none;
+      padding: 6px 14px; border-radius: 6px;
+      transition: color 180ms ease, background-color 180ms ease;
+      white-space: nowrap;
+    }
+    .nav-link:hover { color: #1A2E44; background-color: rgba(26,46,68,0.07); }
+    #nav-indicator {
+      position: absolute; bottom: -1px; height: 2px;
+      background: #1A2E44; border-radius: 1px;
+      pointer-events: none;
+      transition: left 220ms cubic-bezier(0.25,1,0.5,1),
+                  width 220ms cubic-bezier(0.25,1,0.5,1),
+                  opacity 180ms ease;
+      opacity: 0;
+    }
+
+    /* Nav — mobile ghost links */
+    .nav-link-mobile {
+      display: flex; align-items: center;
+      font-family: 'DM Sans', sans-serif; font-size: 15px; color: #1A2E44;
+      text-decoration: none; padding: 10px 12px; border-radius: 8px;
+      transition: background-color 150ms ease;
+    }
+    .nav-link-mobile:hover { background-color: rgba(26,46,68,0.06); }
 
     /* ── Perfil WhatsApp no Sobre ── */
     .wa-profile {
@@ -314,12 +337,15 @@
         <span class="font-serif text-ink text-[15px] font-normal tracking-tight leading-none">Alessandro Mendes</span>
       </a>
 
-      <div class="hidden md:flex items-center gap-8">
-        <a href="#sobre"       class="nav-link">Sobre</a>
-        <a href="#atuacao"     class="nav-link">Atuação</a>
-        <a href="#depoimentos" class="nav-link">Depoimentos</a>
-        <a href="#localizacao" class="nav-link">Localização</a>
-        <a href="https://wa.me/5544998436550" class="btn-primary" style="padding:10px 20px;font-size:12px;" target="_blank">
+      <div class="hidden md:flex items-center gap-1">
+        <ul id="nav-links-desktop" class="relative flex items-center gap-1 list-none m-0 p-0">
+          <div id="nav-indicator"></div>
+          <li><a href="#sobre"       class="nav-link">Sobre</a></li>
+          <li><a href="#atuacao"     class="nav-link">Atuação</a></li>
+          <li><a href="#depoimentos" class="nav-link">Depoimentos</a></li>
+          <li><a href="#localizacao" class="nav-link">Localização</a></li>
+        </ul>
+        <a href="https://wa.me/5544998436550" class="btn-primary ml-4" style="padding:10px 20px;font-size:12px;" target="_blank">
           Agendar Consulta
         </a>
       </div>
@@ -330,12 +356,14 @@
     </div>
 
     <!-- Mobile -->
-    <div id="mobile-nav" class="hidden md:hidden bg-canvas border-t border-divider px-6 py-5 flex flex-col gap-4">
-      <a href="#sobre"       class="nav-link text-[15px] py-1">Sobre</a>
-      <a href="#atuacao"     class="nav-link text-[15px] py-1">Atuação</a>
-      <a href="#depoimentos" class="nav-link text-[15px] py-1">Depoimentos</a>
-      <a href="#localizacao" class="nav-link text-[15px] py-1">Localização</a>
-      <a href="https://wa.me/5544998436550" class="btn-primary mt-2 justify-center" target="_blank">Agendar Consulta</a>
+    <div id="mobile-nav" class="hidden md:hidden bg-canvas border-t border-divider px-4 py-3 flex flex-col gap-1">
+      <a href="#sobre"       class="nav-link-mobile">Sobre</a>
+      <a href="#atuacao"     class="nav-link-mobile">Atuação</a>
+      <a href="#depoimentos" class="nav-link-mobile">Depoimentos</a>
+      <a href="#localizacao" class="nav-link-mobile">Localização</a>
+      <div class="pt-2 pb-1">
+        <a href="https://wa.me/5544998436550" class="btn-primary w-full justify-center" target="_blank">Agendar Consulta</a>
+      </div>
     </div>
   </nav>
 </header>
@@ -814,6 +842,26 @@
   document.getElementById('nav-toggle').addEventListener('click', () => {
     document.getElementById('mobile-nav').classList.toggle('hidden');
   });
+
+  /* ── Nav desktop magic-line ── */
+  (function() {
+    const ul = document.getElementById('nav-links-desktop');
+    const indicator = document.getElementById('nav-indicator');
+    if (!ul || !indicator) return;
+    const links = ul.querySelectorAll('.nav-link');
+    links.forEach(link => {
+      link.addEventListener('mouseenter', () => {
+        const ulRect = ul.getBoundingClientRect();
+        const linkRect = link.getBoundingClientRect();
+        indicator.style.left  = (linkRect.left - ulRect.left) + 'px';
+        indicator.style.width = linkRect.width + 'px';
+        indicator.style.opacity = '1';
+      });
+    });
+    ul.addEventListener('mouseleave', () => {
+      indicator.style.opacity = '0';
+    });
+  })();
 
   /* ── Smooth scroll ── */
   document.querySelectorAll('a[href^="#"]').forEach(a => {
