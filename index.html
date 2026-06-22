@@ -399,11 +399,12 @@
   <!-- Desktop: glow azul animado -->
   <div id="hero-glow" class="hidden md:block" aria-hidden="true"></div>
 
-  <!-- Mobile: foto cobre a tela inteira -->
-  <div class="md:hidden absolute inset-0 z-0">
+  <!-- Mobile: foto ocupa o topo sem precisar de zoom excessivo -->
+  <div class="md:hidden absolute z-0" style="top:0; left:0; right:0; height:68svh;">
     <img src="foto-hero.png" alt="" class="w-full h-full object-cover" style="object-position:center top;">
-    <div class="hero-mobile-gradient absolute inset-0"></div>
   </div>
+  <!-- Gradiente separado, cobre a secao inteira para a transicao ser suave -->
+  <div class="hero-mobile-gradient md:hidden absolute inset-0 z-[1] pointer-events-none"></div>
 
   <!-- Conteúdo -->
   <div class="relative z-10 min-h-[100svh] md:flex md:items-center md:pt-[62px]">
