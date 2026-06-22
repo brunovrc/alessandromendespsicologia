@@ -235,7 +235,7 @@
     /* Avatar geral */
     .avatar { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 500; flex-shrink: 0; }
 
-    /* Hero glow */
+    /* Hero glow — desktop */
     @keyframes hero-breathe {
       0%, 100% { transform: scale(1)   translate(0, 0);    opacity: 0.75; }
       50%       { transform: scale(1.06) translate(-1%, 2%); opacity: 1;    }
@@ -247,6 +247,24 @@
         radial-gradient(ellipse 55% 55% at 28% 65%, rgba(80,  110, 200, 0.10) 0%, transparent 60%);
       mix-blend-mode: multiply;
       animation: hero-breathe 10s ease-in-out infinite;
+    }
+
+    /* Hero mobile: garante que conteúdo sempre começa abaixo do rosto */
+    @media (max-width: 767px) {
+      .hero-mobile-content {
+        padding-top: max(54svh, 300px);
+        padding-bottom: 3rem;
+      }
+      .hero-mobile-gradient {
+        background: linear-gradient(
+          to bottom,
+          transparent 0%,
+          transparent 35%,
+          rgba(249,247,242,0.55) 46%,
+          rgba(249,247,242,0.94) 56%,
+          #F9F7F2 65%
+        );
+      }
     }
 
     /* Nav — desktop magic-line */
@@ -381,15 +399,15 @@
   <!-- Desktop: glow azul animado -->
   <div id="hero-glow" class="hidden md:block" aria-hidden="true"></div>
 
-  <!-- Mobile: foto cobre a tela inteira, gradiente no terço inferior -->
+  <!-- Mobile: foto cobre a tela inteira -->
   <div class="md:hidden absolute inset-0 z-0">
-    <img src="foto-hero.png" alt="" class="w-full h-full object-cover" style="object-position:center 5%;">
-    <div class="absolute inset-0" style="background:linear-gradient(to bottom, transparent 18%, rgba(249,247,242,0.6) 38%, rgba(249,247,242,0.92) 54%, #F9F7F2 65%);"></div>
+    <img src="foto-hero.png" alt="" class="w-full h-full object-cover" style="object-position:center top;">
+    <div class="hero-mobile-gradient absolute inset-0"></div>
   </div>
 
-  <!-- Conteúdo: texto cola no rodapé no mobile, centraliza no desktop -->
-  <div class="relative z-10 min-h-[100dvh] flex flex-col justify-end md:justify-center md:items-center md:pt-[62px]">
-    <div class="w-full max-w-[1100px] mx-auto px-6 pb-14 md:pb-0 md:py-24 md:grid md:grid-cols-12 md:gap-8 md:items-center">
+  <!-- Conteúdo -->
+  <div class="relative z-10 min-h-[100svh] md:flex md:items-center md:pt-[62px]">
+    <div class="w-full max-w-[1100px] mx-auto px-6 hero-mobile-content md:py-24 md:grid md:grid-cols-12 md:gap-8 md:items-center">
 
       <!-- Texto -->
       <div class="md:col-span-7 reveal">
