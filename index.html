@@ -267,12 +267,6 @@
       opacity: 0;
     }
 
-    /* Hero text push — mobile only */
-    .hero-text-push { margin-top: 0; }
-    @media (max-width: 767px) {
-      .hero-text-push { margin-top: clamp(280px, 78vw, 450px); }
-    }
-
     /* Nav hide/show on scroll */
     #site-nav {
       transform: translateY(0);
@@ -382,62 +376,66 @@
 <!-- ══════════════════════════════════════
      HERO
 ══════════════════════════════════════ -->
-<section class="min-h-[100dvh] flex items-center overflow-hidden pt-[62px] relative">
-  <div id="hero-glow" aria-hidden="true"></div>
+<section class="min-h-[100dvh] relative overflow-hidden">
 
-  <!-- ── Mobile: foto full-bleed no topo com gradiente ── -->
-  <div class="md:hidden absolute inset-x-0 z-[1]" style="top:62px; height:72vw; max-height:440px;">
-    <img src="foto-hero.png" alt="" class="w-full h-full object-cover" style="object-position:center 12%;">
-    <div class="absolute inset-x-0 bottom-0 pointer-events-none" style="height:55%; background:linear-gradient(to bottom, transparent 0%, #F9F7F2 100%);"></div>
+  <!-- Desktop: glow azul animado -->
+  <div id="hero-glow" class="hidden md:block" aria-hidden="true"></div>
+
+  <!-- Mobile: foto cobre a tela inteira, gradiente no terço inferior -->
+  <div class="md:hidden absolute inset-0 z-0">
+    <img src="foto-hero.png" alt="" class="w-full h-full object-cover" style="object-position:center 5%;">
+    <div class="absolute inset-0" style="background:linear-gradient(to bottom, transparent 28%, rgba(249,247,242,0.5) 50%, #F9F7F2 70%);"></div>
   </div>
 
-  <div class="max-w-[1100px] mx-auto px-6 w-full grid grid-cols-1 md:grid-cols-12 gap-8 items-center pb-16 md:py-24 relative z-10">
+  <!-- Conteúdo: texto cola no rodapé no mobile, centraliza no desktop -->
+  <div class="relative z-10 min-h-[100dvh] flex flex-col justify-end md:justify-center md:items-center md:pt-[62px]">
+    <div class="w-full max-w-[1100px] mx-auto px-6 pb-14 md:pb-0 md:py-24 md:grid md:grid-cols-12 md:gap-8 md:items-center">
 
-    <!-- Texto -->
-    <div class="md:col-span-7 reveal hero-text-push">
-      <p class="text-[12px] font-medium tracking-[1px] text-accent uppercase mb-7">
-        Psicoterapia Clínica &nbsp;·&nbsp; Maringá & Online
-      </p>
-
-      <!-- Título animado, preenchido por JS -->
-      <h1 id="hero-title"
-          class="font-serif text-ink mb-7"
-          style="font-size:clamp(24px,3.4vw,42px);font-weight:600;line-height:1.08;letter-spacing:-0.02em;visibility:hidden">
-      </h1>
-
-      <p class="text-ink-muted text-[17px] leading-[1.72] mb-10 max-w-[560px]">
-        Atendimento para quem busca não apenas o alívio de sintomas,
-        mas uma compreensão profunda de si mesmo e das histórias que habita.
-      </p>
-
-      <div class="flex flex-col sm:flex-row gap-3">
-        <a href="https://wa.me/5544998436550" class="btn-primary" target="_blank">
-          Agendar via WhatsApp
-          <span class="material-symbols-outlined" style="font-size:15px">arrow_forward</span>
-        </a>
-        <a href="#sobre" class="btn-outlined">Saiba mais</a>
-      </div>
-
-      <div class="mt-12 pt-8 border-t border-divider">
-        <p class="text-[12px] text-ink-muted">
-          CRP 08/<span class="text-ink font-medium">XXXXX</span>
-          &nbsp;·&nbsp; Pós-graduado em Psicologia Analítica Junguiana
+      <!-- Texto -->
+      <div class="md:col-span-7 reveal">
+        <p class="text-[11px] font-medium tracking-[1.2px] text-accent uppercase mb-5">
+          Psicoterapia Clínica &nbsp;·&nbsp; Maringá & Online
         </p>
-      </div>
-    </div>
 
-    <!-- Foto — desktop only -->
-    <div class="hidden md:flex md:col-span-5 justify-end items-center reveal d2">
-      <div class="relative w-[400px] max-w-full">
-        <div class="photo-blob-bg absolute -inset-5 bg-accent-soft/20"></div>
-        <div class="photo-blob aspect-[0.88] relative z-10 shadow-[0_8px_48px_rgba(26,46,68,0.12)]">
-          <img src="foto-hero.png"
-               alt="Alessandro Mendes, Psicólogo"
-               class="w-full h-full object-cover object-top">
+        <h1 id="hero-title"
+            class="font-serif text-ink mb-5"
+            style="font-size:clamp(26px,3.4vw,42px);font-weight:600;line-height:1.1;letter-spacing:-0.02em;visibility:hidden">
+        </h1>
+
+        <p class="text-ink-muted leading-[1.65] mb-8 max-w-[560px]" style="font-size:clamp(15px,1.1vw,17px)">
+          Atendimento para quem busca não apenas o alívio de sintomas,
+          mas uma compreensão profunda de si mesmo e das histórias que habita.
+        </p>
+
+        <div class="flex flex-col sm:flex-row gap-3">
+          <a href="https://wa.me/5544998436550" class="btn-primary" target="_blank">
+            Agendar via WhatsApp
+            <span class="material-symbols-outlined" style="font-size:15px">arrow_forward</span>
+          </a>
+          <a href="#sobre" class="btn-outlined">Saiba mais</a>
+        </div>
+
+        <div class="mt-10 pt-6 border-t border-divider">
+          <p class="text-[12px] text-ink-muted">
+            CRP 08/<span class="text-ink font-medium">XXXXX</span>
+            &nbsp;·&nbsp; Pós-graduado em Psicologia Analítica Junguiana
+          </p>
         </div>
       </div>
-    </div>
 
+      <!-- Foto — desktop only -->
+      <div class="hidden md:flex md:col-span-5 justify-end items-center reveal d2">
+        <div class="relative w-[400px] max-w-full">
+          <div class="photo-blob-bg absolute -inset-5 bg-accent-soft/20"></div>
+          <div class="photo-blob aspect-[0.88] relative z-10 shadow-[0_8px_48px_rgba(26,46,68,0.12)]">
+            <img src="foto-hero.png"
+                 alt="Alessandro Mendes, Psicólogo"
+                 class="w-full h-full object-cover object-top">
+          </div>
+        </div>
+      </div>
+
+    </div>
   </div>
 </section>
 
