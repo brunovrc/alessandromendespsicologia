@@ -267,6 +267,20 @@
       opacity: 0;
     }
 
+    /* Hero text push — mobile only */
+    .hero-text-push { margin-top: 0; }
+    @media (max-width: 767px) {
+      .hero-text-push { margin-top: clamp(180px, 60vw, 360px); }
+    }
+
+    /* Nav hide/show on scroll */
+    #site-nav {
+      transform: translateY(0);
+      transition: transform 320ms cubic-bezier(0.4, 0, 0.2, 1),
+                  box-shadow 280ms ease;
+    }
+    #site-nav.nav-hidden { transform: translateY(-100%); }
+
     /* Nav — mobile ghost links */
     .nav-link-mobile {
       display: flex; align-items: center;
@@ -370,10 +384,17 @@
 ══════════════════════════════════════ -->
 <section class="min-h-[100dvh] flex items-center overflow-hidden pt-[62px] relative">
   <div id="hero-glow" aria-hidden="true"></div>
-  <div class="max-w-[1100px] mx-auto px-6 w-full grid grid-cols-1 md:grid-cols-12 gap-8 items-center py-20 md:py-24 relative z-10">
 
-    <!-- Texto — 7 colunas -->
-    <div class="md:col-span-7 reveal">
+  <!-- ── Mobile: foto full-bleed no topo com gradiente ── -->
+  <div class="md:hidden absolute inset-x-0 z-[1]" style="top:62px; height:72vw; max-height:440px;">
+    <img src="foto-hero.png" alt="" class="w-full h-full object-cover" style="object-position:center 12%;">
+    <div class="absolute inset-x-0 bottom-0 pointer-events-none" style="height:55%; background:linear-gradient(to bottom, transparent 0%, #F9F7F2 100%);"></div>
+  </div>
+
+  <div class="max-w-[1100px] mx-auto px-6 w-full grid grid-cols-1 md:grid-cols-12 gap-8 items-center pb-16 md:py-24 relative z-10">
+
+    <!-- Texto -->
+    <div class="md:col-span-7 reveal hero-text-push">
       <p class="text-[12px] font-medium tracking-[1px] text-accent uppercase mb-7">
         Psicoterapia Clínica &nbsp;·&nbsp; Maringá & Online
       </p>
@@ -405,9 +426,9 @@
       </div>
     </div>
 
-    <!-- Foto — 5 colunas -->
-    <div class="md:col-span-5 flex justify-center md:justify-end items-center reveal d2">
-      <div class="relative w-[280px] sm:w-[340px] md:w-[400px] max-w-full">
+    <!-- Foto — desktop only -->
+    <div class="hidden md:flex md:col-span-5 justify-end items-center reveal d2">
+      <div class="relative w-[400px] max-w-full">
         <div class="photo-blob-bg absolute -inset-5 bg-accent-soft/20"></div>
         <div class="photo-blob aspect-[0.88] relative z-10 shadow-[0_8px_48px_rgba(26,46,68,0.12)]">
           <img src="foto-hero.png"
@@ -833,6 +854,28 @@
     siteNav.style.boxShadow = window.scrollY > 30
       ? '0 1px 0 rgba(26,46,68,0.08)' : 'none';
   }, { passive: true });
+
+  /* ── Nav hide/show on scroll ── */
+  (function() {
+    const nav = document.getElementById('site-nav');
+    let lastY = 0;
+    let ticking = false;
+    window.addEventListener('scroll', () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          const y = window.scrollY;
+          if (y > 80) {
+            nav.classList.toggle('nav-hidden', y > lastY);
+          } else {
+            nav.classList.remove('nav-hidden');
+          }
+          lastY = y;
+          ticking = false;
+        });
+        ticking = true;
+      }
+    }, { passive: true });
+  })();
 
   /* ── Menu mobile ── */
   document.getElementById('nav-toggle').addEventListener('click', () => {
