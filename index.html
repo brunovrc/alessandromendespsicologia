@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Alessandro Mendes — Psicólogo Clínico em Maringá. Psicologia Analítica Junguiana para crianças, adolescentes, adultos e casais. Atendimento presencial e online.">
+  <title>Alessandro Mendes | Psicologia Analítica Junguiana</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,300;1,8..60,400;1,8..60,600&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,100,0,0" rel="stylesheet">
+
+  <!-- MapLibre GL JS -->
+  <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css">
+  <script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            canvas:         "#F9F7F2",
+            "canvas-soft":  "#F3F1EC",
+            ink:            "#1A2E44",
+            "ink-mid":      "#2E4460",
+            "ink-muted":    "#6B7A8D",
+            accent:         "#B87352",
+            "accent-hover": "#A3623F",
+            "accent-soft":  "#E8C4A8",
+            olive:          "#6B705C",
+            "olive-soft":   "#C4C7BB",
+            divider:        "#E8E4DE",
+          },
+          fontFamily: {
+            serif: ['"Source Serif 4"', 'Georgia', 'serif'],
+            sans:  ['"DM Sans"', 'system-ui', 'sans-serif'],
+          },
+        },
+      },
+    }
+  </script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background-color: #F9F7F2;
+      color: #1A2E44;
+      font-family: 'DM Sans', system-ui, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      line-height: 1.65;
+    }
+
+    /* Grain de papel sutil */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+      opacity: 0.025;
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    /* Ícones finos */
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 100, 'GRAD' 0, 'opsz' 24;
+      vertical-align: middle;
+      display: inline-block;
+      line-height: 1;
+    }
+
+    /* Nav glass */
+    .nav-glass {
+      background-color: rgba(249, 247, 242, 0.9);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+    }
+
+    /* ── Hero word animation ── */
+    @keyframes word-rise {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: none; }
+    }
+    .hw {
+      display: inline-block;
+      opacity: 0;
+      animation: word-rise 0.55s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+
+    /* "Junguiana" em destaque */
+    .hw-jung {
+      color: #B87352;
+      font-style: italic;
+    }
+
+    /* Blob da foto */
+    .photo-blob {
+      border-radius: 62% 38% 46% 54% / 60% 44% 56% 40%;
+      animation: blob 14s ease-in-out infinite;
+      overflow: hidden;
+    }
+    .photo-blob-bg {
+      border-radius: 62% 38% 46% 54% / 60% 44% 56% 40%;
+      animation: blob 14s ease-in-out infinite;
+      animation-delay: -4s;
+    }
+    @keyframes blob {
+      0%,100% { border-radius: 62% 38% 46% 54% / 60% 44% 56% 40%; }
+      33%      { border-radius: 44% 56% 60% 40% / 52% 60% 40% 48%; }
+      66%      { border-radius: 52% 48% 38% 62% / 40% 52% 48% 60%; }
+    }
+
+    /* Scroll reveal */
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.75s cubic-bezier(0.4, 0, 0.2, 1),
+                  transform 0.75s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .reveal.in { opacity: 1; transform: none; }
+    .d1 { transition-delay: 0.10s; }
+    .d2 { transition-delay: 0.20s; }
+    .d3 { transition-delay: 0.30s; }
+
+    /* Linha acento */
+    .rule { width: 40px; height: 1px; background: #B87352; margin-bottom: 28px; }
+
+    section + section { border-top: 1px solid #E8E4DE; }
+
+    /* ── Botões ── */
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: #B87352; color: #F9F7F2;
+      padding: 13px 28px; border-radius: 4px;
+      font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; letter-spacing: 0.3px;
+      text-decoration: none; border: none; cursor: pointer;
+      transition: background 260ms ease;
+    }
+    .btn-primary:hover { background: #A3623F; }
+
+    .btn-outlined {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: transparent; color: #1A2E44;
+      padding: 12px 27px; border-radius: 4px;
+      border: 1.5px solid #1A2E44;
+      font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; letter-spacing: 0.3px;
+      text-decoration: none; cursor: pointer;
+      transition: background 260ms ease, color 260ms ease;
+    }
+    .btn-outlined:hover { background: #1A2E44; color: #F9F7F2; }
+
+    /* Botões de mapa */
+    .btn-map {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 10px 16px; border-radius: 4px;
+      font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 500; letter-spacing: 0.3px;
+      text-decoration: none; cursor: pointer; white-space: nowrap;
+      transition: opacity 220ms ease, transform 150ms ease;
+    }
+    .btn-map:hover { opacity: 0.88; transform: translateY(-1px); }
+    .btn-map-waze  { background: #07BFFF; color: #fff; }
+    .btn-map-gmaps { background: #1A73E8; color: #fff; }
+
+    /* MapLibre override */
+    .maplibregl-map { font-family: 'DM Sans', system-ui, sans-serif; }
+    .maplibregl-popup-content {
+      border-radius: 6px !important;
+      padding: 10px 14px !important;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px; color: #1A2E44;
+      box-shadow: 0 4px 20px rgba(26,46,68,0.14) !important;
+    }
+    .maplibregl-popup-close-button { display: none; }
+
+    /* Itens de demanda */
+    .demanda-item {
+      display: flex; align-items: center; gap: 10px;
+      color: rgba(249,247,242,0.75); font-size: 15px; line-height: 1.5;
+    }
+    .demanda-dot { width: 4px; height: 4px; border-radius: 50%; background: #B87352; flex-shrink: 0; }
+
+    /* Cards de atuação */
+    .card-atuacao {
+      background: #F9F7F2; border: 1px solid #E8E4DE; border-radius: 8px; padding: 36px 28px;
+      transition: border-color 280ms ease;
+    }
+    .card-atuacao:hover { border-color: #B87352; }
+    .card-atuacao:hover .card-icon { color: #B87352; }
+    .card-icon { color: #1A2E44; transition: color 280ms ease; font-size: 22px !important; margin-bottom: 24px; display: block; }
+
+    /* Cards de depoimento */
+    .testimonial-card {
+      background: #FFFFFF; border: 1px solid rgba(26,46,68,0.08); border-radius: 16px;
+      padding: 32px; display: flex; flex-direction: column; justify-content: space-between;
+      position: relative; overflow: hidden;
+      transition: box-shadow 300ms ease;
+    }
+    .testimonial-card:hover { box-shadow: 0 8px 32px rgba(26,46,68,0.13); }
+    .testimonial-quote {
+      position: absolute; top: 10px; right: 20px;
+      font-family: 'Source Serif 4', serif; font-size: 90px; line-height: 1;
+      color: rgba(26,46,68,0.07); pointer-events: none; user-select: none; font-weight: 300;
+    }
+    .t-stars { display: flex; gap: 3px; margin-bottom: 14px; }
+    .t-stars svg { width: 17px; height: 17px; flex-shrink: 0; }
+
+    /* Avatar geral */
+    .avatar { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 500; flex-shrink: 0; }
+
+    /* Nav link */
+    .nav-link { font-size: 14px; color: #6B7A8D; text-decoration: none; transition: color 220ms ease; }
+    .nav-link:hover { color: #1A2E44; }
+
+    /* ── Perfil WhatsApp no Sobre ── */
+    .wa-profile {
+      display: inline-flex; align-items: center; gap: 14px;
+      background: #fff;
+      border-radius: 16px 16px 16px 2px;
+      padding: 12px 22px 12px 12px;
+      box-shadow: 0 2px 16px rgba(26,46,68,0.10);
+      margin-bottom: 28px;
+    }
+    .wa-avatar {
+      width: 72px; height: 72px; border-radius: 50%; overflow: hidden; flex-shrink: 0;
+      border: 2px solid #E8E4DE;
+    }
+    .wa-avatar img { width: 100%; height: 100%; object-fit: cover; object-position: center 15%; }
+
+    /* ── Ícones sociais oficiais ── */
+    .social-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 9px 16px; border-radius: 6px;
+      text-decoration: none;
+      font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500;
+      transition: opacity 220ms ease, transform 150ms ease;
+      color: #fff;
+    }
+    .social-btn:hover { opacity: 0.87; transform: translateY(-1px); }
+    .social-btn-whatsapp  { background: #25D366; }
+    .social-btn-instagram { background: linear-gradient(135deg,#f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%); }
+    .social-btn-email     { background: #EA4335; }
+
+    /* WhatsApp FAB ping */
+    @keyframes fab-ping {
+      75%, 100% { transform: scale(1.9); opacity: 0; }
+    }
+    .fab-ping {
+      position: absolute; inset: 0; border-radius: 50%;
+      background: #25D366;
+      animation: fab-ping 1.8s cubic-bezier(0, 0, 0.2, 1) infinite;
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- ══════════════════════════════════════
+     NAV
+══════════════════════════════════════ -->
+<header id="site-nav" class="fixed top-0 left-0 right-0 z-50 transition-shadow duration-300">
+  <nav class="nav-glass border-b border-divider/50">
+    <div class="max-w-[1100px] mx-auto px-6 flex items-center justify-between h-[62px]">
+
+      <a href="#" class="flex items-center gap-2.5 no-underline">
+        <div class="w-7 h-7 rounded-full bg-ink flex items-center justify-center flex-shrink-0">
+          <span style="font-family:'DM Sans',sans-serif;font-size:10px;font-weight:500;color:#F9F7F2;letter-spacing:0.5px">AM</span>
+        </div>
+        <span class="font-serif text-ink text-[15px] font-normal tracking-tight leading-none">Alessandro Mendes</span>
+      </a>
+
+      <div class="hidden md:flex items-center gap-8">
+        <a href="#sobre"       class="nav-link">Sobre</a>
+        <a href="#atuacao"     class="nav-link">Atuação</a>
+        <a href="#depoimentos" class="nav-link">Depoimentos</a>
+        <a href="#localizacao" class="nav-link">Localização</a>
+        <a href="https://wa.me/5544999999999" class="btn-primary" style="padding:10px 20px;font-size:12px;" target="_blank">
+          Agendar Consulta
+        </a>
+      </div>
+
+      <button id="nav-toggle" class="md:hidden text-ink p-1" aria-label="Menu">
+        <span class="material-symbols-outlined" style="font-size:22px">menu</span>
+      </button>
+    </div>
+
+    <!-- Mobile -->
+    <div id="mobile-nav" class="hidden md:hidden bg-canvas border-t border-divider px-6 py-5 flex flex-col gap-4">
+      <a href="#sobre"       class="nav-link text-[15px] py-1">Sobre</a>
+      <a href="#atuacao"     class="nav-link text-[15px] py-1">Atuação</a>
+      <a href="#depoimentos" class="nav-link text-[15px] py-1">Depoimentos</a>
+      <a href="#localizacao" class="nav-link text-[15px] py-1">Localização</a>
+      <a href="https://wa.me/5544999999999" class="btn-primary mt-2 justify-center" target="_blank">Agendar Consulta</a>
+    </div>
+  </nav>
+</header>
+
+
+<!-- ══════════════════════════════════════
+     HERO
+══════════════════════════════════════ -->
+<section class="min-h-[100dvh] flex items-center overflow-hidden pt-[62px]">
+  <div class="max-w-[1100px] mx-auto px-6 w-full grid grid-cols-1 md:grid-cols-12 gap-8 items-center py-20 md:py-24">
+
+    <!-- Texto — 8 colunas para caber em 2 linhas -->
+    <div class="md:col-span-8 reveal">
+      <p class="text-[12px] font-medium tracking-[1px] text-accent uppercase mb-7">
+        Psicoterapia Clínica &nbsp;·&nbsp; Maringá & Online
+      </p>
+
+      <!-- Título animado, preenchido por JS -->
+      <h1 id="hero-title"
+          class="font-serif text-ink mb-7"
+          style="font-size:clamp(24px,3.4vw,42px);font-weight:600;line-height:1.08;letter-spacing:-0.02em;visibility:hidden">
+      </h1>
+
+      <p class="text-ink-muted text-[17px] leading-[1.72] mb-10 max-w-[560px]">
+        Atendimento para quem busca não apenas o alívio de sintomas,
+        mas uma compreensão profunda de si mesmo e das histórias que habita.
+      </p>
+
+      <div class="flex flex-col sm:flex-row gap-3">
+        <a href="https://wa.me/5544999999999" class="btn-primary" target="_blank">
+          Agendar via WhatsApp
+          <span class="material-symbols-outlined" style="font-size:15px">arrow_forward</span>
+        </a>
+        <a href="#sobre" class="btn-outlined">Saiba mais</a>
+      </div>
+
+      <div class="mt-12 pt-8 border-t border-divider">
+        <p class="text-[12px] text-ink-muted">
+          CRP 08/<span class="text-ink font-medium">XXXXX</span>
+          &nbsp;·&nbsp; Pós-graduado em Psicologia Analítica Junguiana
+        </p>
+      </div>
+    </div>
+
+    <!-- Foto — 4 colunas -->
+    <div class="md:col-span-4 flex justify-center md:justify-end items-center reveal d2">
+      <div class="relative w-[240px] sm:w-[270px] md:w-[290px] max-w-full">
+        <div class="photo-blob-bg absolute -inset-5 bg-accent-soft/20"></div>
+        <div class="photo-blob aspect-[0.88] relative z-10 shadow-[0_8px_48px_rgba(26,46,68,0.12)]">
+          <img src="../../identidade/foto-hero.png"
+               alt="Alessandro Mendes, Psicólogo"
+               class="w-full h-full object-cover object-top">
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════
+     SOBRE
+══════════════════════════════════════ -->
+<section id="sobre" class="py-[112px] bg-canvas-soft">
+  <div class="max-w-[1100px] mx-auto px-6">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-24 items-center">
+
+      <!-- Quote card -->
+      <div class="order-1 md:order-2 reveal">
+        <div class="relative bg-canvas border border-divider p-10 md:p-12"
+             style="border-radius:8px;box-shadow:0 1px 3px rgba(26,46,68,0.05),0 4px 16px rgba(26,46,68,0.04)">
+          <span class="font-serif absolute -top-7 left-8 text-[100px] text-accent/12 leading-none select-none">"</span>
+          <blockquote class="font-serif text-ink text-[21px] font-normal leading-[1.55] italic">
+            "Sua visão se tornará clara somente quando você puder olhar para o seu próprio coração. Quem olha para fora, sonha; quem olha para dentro, desperta."
+          </blockquote>
+          <footer class="mt-7 flex items-center gap-3">
+            <div class="w-8 h-px bg-accent"></div>
+            <cite class="not-italic text-[11px] font-medium tracking-[1px] text-ink-muted uppercase">Carl G. Jung</cite>
+          </footer>
+        </div>
+      </div>
+
+      <!-- Texto -->
+      <div class="order-2 md:order-1 reveal">
+
+        <!-- Perfil estilo WhatsApp -->
+        <div class="wa-profile">
+          <div class="wa-avatar">
+            <img src="../../identidade/foto-hero.png" alt="Alessandro Mendes">
+          </div>
+          <div>
+            <p style="font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;color:#1A2E44;line-height:1.2;margin-bottom:3px">
+              Alessandro Mendes
+            </p>
+            <p style="font-family:'DM Sans',sans-serif;font-size:11px;color:#6B7A8D">
+              Psicólogo · CRP 08/XXXXX
+            </p>
+          </div>
+        </div>
+
+        <p class="text-[12px] font-medium tracking-[1px] text-accent uppercase mb-6">Sobre</p>
+        <div class="rule"></div>
+        <h2 class="font-serif text-ink text-[30px] font-normal leading-[1.22] mb-6">
+          A profundidade como<br>ferramenta de cura.
+        </h2>
+        <p class="text-ink-muted text-[16px] leading-[1.72] mb-5">
+          Sou Alessandro Mendes, psicólogo clínico com formação na Psicologia Analítica de C. G. Jung. Meu trabalho é voltado para quem busca não apenas o alívio de sintomas, mas uma compreensão real de si mesmo.
+        </p>
+        <p class="text-ink-muted text-[16px] leading-[1.72] mb-10">
+          Pós-graduado com ênfase em <em class="text-accent not-italic font-normal">Contos, Mitologia e Arte</em>, acredito que a psique fala em símbolos. Por isso utilizo referências literárias, filmes, músicas e técnicas artísticas como instrumentos clínicos.
+        </p>
+
+        <div class="grid grid-cols-2 gap-x-6 gap-y-4 pt-8 border-t border-divider">
+          <div class="flex items-center gap-3">
+            <span class="material-symbols-outlined text-accent" style="font-size:18px">palette</span>
+            <span class="text-[14px] font-medium text-ink">Arte-Expressão</span>
+          </div>
+          <div class="flex items-center gap-3">
+            <span class="material-symbols-outlined text-accent" style="font-size:18px">menu_book</span>
+            <span class="text-[14px] font-medium text-ink">Mitologia</span>
+          </div>
+          <div class="flex items-center gap-3">
+            <span class="material-symbols-outlined text-accent" style="font-size:18px">movie</span>
+            <span class="text-[14px] font-medium text-ink">Cinematerapia</span>
+          </div>
+          <div class="flex items-center gap-3">
+            <span class="material-symbols-outlined text-accent" style="font-size:18px">self_improvement</span>
+            <span class="text-[14px] font-medium text-ink">Jungianismo</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════
+     ATUAÇÃO
+══════════════════════════════════════ -->
+<section id="atuacao" class="py-[112px] bg-canvas">
+  <div class="max-w-[1100px] mx-auto px-6">
+
+    <div class="mb-14 reveal">
+      <p class="text-[12px] font-medium tracking-[1px] text-accent uppercase mb-6">Atuação</p>
+      <div class="rule"></div>
+      <h2 class="font-serif text-ink text-[30px] font-normal leading-[1.2]">Atuação Clínica Especializada</h2>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-12">
+      <div class="card-atuacao reveal">
+        <span class="material-symbols-outlined card-icon">child_care</span>
+        <h3 class="font-serif text-ink text-[20px] font-normal mb-3">Crianças</h3>
+        <p class="text-ink-muted text-[16px] leading-[1.65]">Processo lúdico e simbólico para o desenvolvimento saudável desde os primeiros anos.</p>
+      </div>
+      <div class="card-atuacao reveal d1">
+        <span class="material-symbols-outlined card-icon">face</span>
+        <h3 class="font-serif text-ink text-[20px] font-normal mb-3">Adolescentes</h3>
+        <p class="text-ink-muted text-[16px] leading-[1.65]">Apoio na construção de identidade com escuta acolhedora e sem julgamento.</p>
+      </div>
+      <div class="card-atuacao reveal d2">
+        <span class="material-symbols-outlined card-icon">person</span>
+        <h3 class="font-serif text-ink text-[20px] font-normal mb-3">Adultos</h3>
+        <p class="text-ink-muted text-[16px] leading-[1.65]">Processo de Individuação: encontrando sentido em meio às crises e transições.</p>
+      </div>
+      <div class="card-atuacao reveal d3">
+        <span class="material-symbols-outlined card-icon">groups</span>
+        <h3 class="font-serif text-ink text-[20px] font-normal mb-3">Casais</h3>
+        <p class="text-ink-muted text-[16px] leading-[1.65]">Mediação e compreensão das projeções e dinâmicas que permeiam o vínculo.</p>
+      </div>
+    </div>
+
+    <!-- Demandas -->
+    <div class="reveal bg-ink p-10 md:p-14" style="border-radius:8px">
+      <div class="flex flex-col lg:flex-row gap-10 lg:gap-16">
+        <div class="lg:w-[260px] flex-shrink-0">
+          <h3 class="font-serif text-canvas text-[22px] font-normal mb-3">Demandas Comuns</h3>
+          <p class="text-canvas/55 text-[15px] leading-[1.65]">Aspectos da vida que trabalhamos juntos para integrar e ressignificar.</p>
+        </div>
+        <div class="flex-1 grid grid-cols-2 sm:grid-cols-3 gap-x-10 gap-y-3.5">
+          <div class="demanda-item"><div class="demanda-dot"></div>Ansiedade</div>
+          <div class="demanda-item"><div class="demanda-dot"></div>Depressão</div>
+          <div class="demanda-item"><div class="demanda-dot"></div>Síndrome do Pânico</div>
+          <div class="demanda-item"><div class="demanda-dot"></div>Alienação Parental</div>
+          <div class="demanda-item"><div class="demanda-dot"></div>Dependência Química</div>
+          <div class="demanda-item"><div class="demanda-dot"></div>Borderline</div>
+          <div class="demanda-item"><div class="demanda-dot"></div>Violência Sexual</div>
+          <div class="demanda-item"><div class="demanda-dot"></div>Luto e Separações</div>
+          <div class="demanda-item"><div class="demanda-dot"></div>Doenças Emocionais</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════
+     DEPOIMENTOS
+══════════════════════════════════════ -->
+<section id="depoimentos" class="py-[112px] bg-canvas-soft">
+  <div class="max-w-[1100px] mx-auto px-6">
+
+    <div class="mb-14 reveal">
+      <p class="text-[12px] font-medium tracking-[1px] text-accent uppercase mb-6">Depoimentos</p>
+      <div class="rule"></div>
+      <h2 class="font-serif text-ink text-[30px] font-normal leading-[1.2] italic">Relatos de Jornada</h2>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+
+      <!-- Depoimento 1 -->
+      <div class="testimonial-card reveal">
+        <span class="testimonial-quote">"</span>
+        <div>
+          <div class="t-stars">
+            <svg fill="#FACC15" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+            <svg fill="#FACC15" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+            <svg fill="#FACC15" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+            <svg fill="#FACC15" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+            <svg fill="#FACC15" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+          </div>
+          <p class="text-ink/75 text-[16px] leading-[1.65]">Às vezes traz perguntas que parecem aleatórias, mas no final tudo faz sentido. A terapia com Alessandro mudou a forma como me enxergo.</p>
+        </div>
+        <div class="flex items-center gap-3 mt-6">
+          <div class="avatar bg-accent-soft text-[#A3623F]">M</div>
+          <div>
+            <p class="text-[14px] font-semibold text-ink">Mariana S.</p>
+            <p class="text-[13px] text-ink-muted">Paciente, 32 anos</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Depoimento 2 -->
+      <div class="testimonial-card reveal d1">
+        <span class="testimonial-quote">"</span>
+        <div>
+          <div class="t-stars">
+            <svg fill="#FACC15" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+            <svg fill="#FACC15" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+            <svg fill="#FACC15" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+            <svg fill="#FACC15" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+            <svg fill="#FACC15" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+          </div>
+          <p class="text-ink/75 text-[16px] leading-[1.65]">O primeiro profissional que me fez levar a terapia como um estilo de vida. Cada sessão é uma descoberta sobre mim mesmo.</p>
+        </div>
+        <div class="flex items-center gap-3 mt-6">
+          <div class="avatar bg-[#D1E4FF]/80 text-ink">R</div>
+          <div>
+            <p class="text-[14px] font-semibold text-ink">Ricardo A.</p>
+            <p class="text-[13px] text-ink-muted">Paciente, 45 anos</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Depoimento 3 -->
+      <div class="testimonial-card reveal d2">
+        <span class="testimonial-quote">"</span>
+        <div>
+          <div class="t-stars">
+            <svg fill="#FACC15" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+            <svg fill="#FACC15" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+            <svg fill="#FACC15" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+            <svg fill="#FACC15" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+            <svg fill="#FACC15" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+          </div>
+          <p class="text-ink/75 text-[16px] leading-[1.65]">Você não ajudou somente meu filho, mas toda a minha família. Encontramos um caminho de volta para o diálogo que parecia perdido.</p>
+        </div>
+        <div class="flex items-center gap-3 mt-6">
+          <div class="avatar bg-[#E8C4A8]/60 text-[#A3623F]">L</div>
+          <div>
+            <p class="text-[14px] font-semibold text-ink">Lúcia M.</p>
+            <p class="text-[13px] text-ink-muted">Mãe de paciente</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════
+     LOCALIZAÇÃO
+══════════════════════════════════════ -->
+<section id="localizacao" class="py-[112px] bg-canvas">
+  <div class="max-w-[1100px] mx-auto px-6">
+
+    <div class="mb-10 reveal">
+      <p class="text-[12px] font-medium tracking-[1px] text-accent uppercase mb-6">Localização</p>
+      <div class="rule"></div>
+      <h2 class="font-serif text-ink text-[30px] font-normal leading-[1.2]">Como chegar</h2>
+    </div>
+
+    <div class="overflow-hidden border border-divider grid grid-cols-1 md:grid-cols-2
+                shadow-[0_4px_32px_rgba(26,46,68,0.06)] reveal"
+         style="border-radius:8px">
+
+      <!-- Info -->
+      <div class="p-10 md:p-12 flex flex-col justify-between bg-canvas-soft">
+        <div>
+          <h3 class="font-serif text-ink text-[22px] font-normal leading-[1.3] mb-7">
+            Um espaço de acolhimento<br>em Maringá
+          </h3>
+
+          <div class="space-y-6 mb-8">
+            <div class="flex items-start gap-4">
+              <span class="material-symbols-outlined text-accent mt-0.5" style="font-size:20px">location_on</span>
+              <div>
+                <p class="text-ink font-medium text-[15px] mb-1.5">Consultório Presencial</p>
+                <p class="text-ink-muted text-[15px] leading-[1.65]">
+                  Av. Paraná, 242 — Zona 07<br>
+                  Maringá — PR, 87020-000
+                </p>
+              </div>
+            </div>
+            <div class="flex items-start gap-4">
+              <span class="material-symbols-outlined text-accent mt-0.5" style="font-size:20px">devices</span>
+              <div>
+                <p class="text-ink font-medium text-[15px] mb-1.5">Atendimento Online</p>
+                <p class="text-ink-muted text-[15px] leading-[1.65]">
+                  Sessões via Google Meet ou Zoom para qualquer lugar do Brasil e do mundo.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Botões Waze + Google Maps -->
+          <div class="flex flex-wrap gap-2">
+            <a href="https://waze.com/ul?q=Av.+Paraná+242+Maringá+PR"
+               class="btn-map btn-map-waze" target="_blank" rel="noopener noreferrer">
+              <!-- Waze SVG oficial -->
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50" fill="white" width="16" height="16">
+                <path d="M25 3C12.85 3 3 12.85 3 25c0 5.2 1.78 9.98 4.74 13.76L6.1 44.25A1.5 1.5 0 007.75 46l5.72-1.8C16.78 46.02 20.77 47 25 47c12.15 0 22-9.85 22-22S37.15 3 25 3zm0 4c9.94 0 18 8.06 18 18S34.94 43 25 43c-3.78 0-7.28-1.17-10.17-3.16a1.5 1.5 0 00-1.2-.2l-3.97 1.25.95-3.8a1.5 1.5 0 00-.24-1.27A17.93 17.93 0 017 25C7 15.06 15.06 7 25 7zm-6.5 9a2.5 2.5 0 100 5 2.5 2.5 0 000-5zm13 0a2.5 2.5 0 100 5 2.5 2.5 0 000-5zm-6.45 7c-3.38 0-6.35 1.95-7.83 4.8a1.5 1.5 0 002.66 1.4C20.8 27.1 22.57 26 25.05 26c2.46 0 4.2 1.1 5.17 3.2a1.5 1.5 0 002.66-1.4C31.4 25 28.4 23 25.05 23z"/>
+              </svg>
+              Abrir no Waze
+            </a>
+            <a href="https://maps.google.com/?q=Av.+Paraná+242+Zona+07+Maringá+PR+Brasil"
+               class="btn-map btn-map-gmaps" target="_blank" rel="noopener noreferrer">
+              <!-- Google Maps pin SVG -->
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" width="16" height="16">
+                <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+              </svg>
+              Google Maps
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mapa MapLibre -->
+      <div class="h-80 md:h-auto min-h-[400px] relative">
+        <div id="mapa-consultorio" class="absolute inset-0"></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════
+     CTA FINAL
+══════════════════════════════════════ -->
+<section class="py-[96px] bg-ink">
+  <div class="max-w-[640px] mx-auto px-6 text-center reveal">
+    <p class="text-[12px] font-medium tracking-[1px] text-accent uppercase mb-8">Próximo Passo</p>
+    <h2 class="font-serif text-canvas text-[32px] md:text-[38px] font-light leading-[1.2] mb-6">
+      O caminho para dentro começa<br>com uma conversa.
+    </h2>
+    <p class="text-canvas/55 text-[16px] leading-[1.7] mb-10 max-w-[480px] mx-auto">
+      Entre em contato para agendar uma sessão. Atendimento presencial em Maringá ou online para qualquer lugar.
+    </p>
+    <a href="https://wa.me/5544999999999" class="btn-primary" style="padding:14px 36px;font-size:13px;" target="_blank">
+      Agendar pelo WhatsApp
+      <span class="material-symbols-outlined" style="font-size:15px">arrow_forward</span>
+    </a>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════
+     FOOTER
+══════════════════════════════════════ -->
+<footer class="bg-ink border-t border-white/8 py-14">
+  <div class="max-w-[1100px] mx-auto px-6">
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-8">
+
+      <div>
+        <p class="font-serif text-canvas text-[18px] font-normal mb-1">Alessandro Mendes</p>
+        <p class="text-[11px] font-medium tracking-[1px] text-canvas/40 uppercase">Psicólogo Junguiano · CRP 08/XXXXX</p>
+      </div>
+
+      <!-- Ícones oficiais -->
+      <div class="flex flex-wrap gap-3">
+
+        <!-- WhatsApp oficial -->
+        <a href="https://wa.me/5544999999999" class="social-btn social-btn-whatsapp" target="_blank" rel="noopener">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" width="16" height="16">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+          </svg>
+          WhatsApp
+        </a>
+
+        <!-- Instagram oficial -->
+        <a href="https://instagram.com" class="social-btn social-btn-instagram" target="_blank" rel="noopener">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" width="16" height="16">
+            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
+          </svg>
+          Instagram
+        </a>
+
+        <!-- Gmail / E-mail oficial -->
+        <a href="mailto:contato@alessandromendes.com" class="social-btn social-btn-email">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" width="16" height="16">
+            <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+          </svg>
+          E-mail
+        </a>
+
+      </div>
+    </div>
+
+    <div class="mt-10 pt-6 border-t border-white/10 flex flex-col md:flex-row justify-between gap-3 text-canvas/30 text-[12px]">
+      <p>© 2025 Alessandro Mendes — Psicólogo Clínico. Todos os direitos reservados.</p>
+      <a href="#" class="hover:text-canvas/60 transition-colors">Política de Privacidade</a>
+    </div>
+  </div>
+</footer>
+
+
+<!-- ══════════════════════════════════════
+     FAB WHATSAPP (sticky, acompanha scroll)
+══════════════════════════════════════ -->
+<a href="https://wa.me/5544999999999"
+   id="whatsapp-fab"
+   class="fixed bottom-6 right-6 z-40 group flex items-center"
+   target="_blank" rel="noopener noreferrer"
+   title="Falar via WhatsApp">
+
+  <!-- Tooltip -->
+  <span class="absolute right-full mr-3 bg-ink text-canvas text-[12px] font-medium px-3 py-2 whitespace-nowrap pointer-events-none
+               opacity-0 group-hover:opacity-100 translate-x-2 group-hover:translate-x-0
+               transition-all duration-200"
+        style="border-radius:4px;font-family:'DM Sans',sans-serif">
+    Agendar sessão
+  </span>
+
+  <!-- Botão -->
+  <span class="relative flex items-center justify-center w-[56px] h-[56px] rounded-full
+               shadow-[0_4px_22px_rgba(37,211,102,0.5)]
+               transition-transform duration-200 group-hover:scale-110"
+        style="background:#25D366">
+    <!-- Pulse ring -->
+    <span class="fab-ping"></span>
+    <!-- Ícone WhatsApp oficial -->
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" width="26" height="26" class="relative z-10">
+      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+    </svg>
+  </span>
+</a>
+
+
+<!-- ══════════════════════════════════════
+     SCRIPTS
+══════════════════════════════════════ -->
+<script>
+  /* ── Nav sombra no scroll ── */
+  const siteNav = document.getElementById('site-nav');
+  window.addEventListener('scroll', () => {
+    siteNav.style.boxShadow = window.scrollY > 30
+      ? '0 1px 0 rgba(26,46,68,0.08)' : 'none';
+  }, { passive: true });
+
+  /* ── Menu mobile ── */
+  document.getElementById('nav-toggle').addEventListener('click', () => {
+    document.getElementById('mobile-nav').classList.toggle('hidden');
+  });
+
+  /* ── Smooth scroll ── */
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const id = a.getAttribute('href');
+      if (id === '#') return;
+      const t = document.querySelector(id);
+      if (!t) return;
+      e.preventDefault();
+      document.getElementById('mobile-nav').classList.add('hidden');
+      t.scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+
+  /* ── Scroll reveal ── */
+  const io = new IntersectionObserver(
+    es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }),
+    { threshold: 0.1, rootMargin: '0px 0px -48px 0px' }
+  );
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  /* ─────────────────────────────────────
+     HERO TITLE — animação palavra por palavra
+     "Junguiana" em terracota com underline sweep
+  ───────────────────────────────────── */
+  (function buildHeroTitle() {
+    const el = document.getElementById('hero-title');
+    if (!el) return;
+
+    // Estrutura em 2 linhas
+    const line1 = [
+      { t: 'Psicologia' },
+      { t: ' ', sp: true },
+      { t: 'Analítica' },
+      { t: ' ', sp: true },
+      { t: 'Junguiana:', jung: true },
+    ];
+    const line2 = [
+      { t: 'o' },
+      { t: ' ', sp: true },
+      { t: 'autoconhecimento' },
+      { t: ' ', sp: true },
+      { t: 'como' },
+      { t: ' ', sp: true },
+      { t: 'estilo' },
+      { t: ' ', sp: true },
+      { t: 'de' },
+      { t: ' ', sp: true },
+      { t: 'vida.' },
+    ];
+
+    let wi = 0; // word index for delay
+    const base = 0.075; // seconds per word
+
+    function addWords(parts, container) {
+      parts.forEach(p => {
+        if (p.sp) {
+          const s = document.createElement('span');
+          s.style.cssText = 'display:inline-block;width:0.28em';
+          container.appendChild(s);
+          return;
+        }
+        const s = document.createElement('span');
+        s.textContent = p.t;
+        s.className = 'hw' + (p.jung ? ' hw-jung' : '');
+        s.style.animationDelay = `${wi * base}s`;
+        if (p.jung) {
+          // underline aparece após a palavra surgir
+          s.style.setProperty('--ud', `${wi * base + 0.45}s`);
+        }
+        container.appendChild(s);
+        wi++;
+      });
+    }
+
+    const l1 = document.createElement('span');
+    l1.style.display = 'block';
+    addWords(line1, l1);
+
+    const l2 = document.createElement('span');
+    l2.style.display = 'block';
+    addWords(line2, l2);
+
+    el.appendChild(l1);
+    el.appendChild(l2);
+    el.style.visibility = 'visible';
+  })();
+
+  /* ─────────────────────────────────────
+     MAPLIBRE — mapa do consultório
+  ───────────────────────────────────── */
+  (function initMap() {
+    const container = document.getElementById('mapa-consultorio');
+    if (!container || typeof maplibregl === 'undefined') return;
+
+    // Inicializa só quando a seção entrar na viewport
+    const obs = new IntersectionObserver(entries => {
+      if (!entries[0].isIntersecting) return;
+      obs.disconnect();
+
+      // Coordenadas: Av. Paraná, 242 — Zona 07, Maringá PR
+      const LNG = -51.9381, LAT = -23.4246;
+
+      const map = new maplibregl.Map({
+        container: 'mapa-consultorio',
+        style: 'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json',
+        center: [LNG, LAT],
+        zoom: 15,
+        attributionControl: { compact: true },
+      });
+
+      map.addControl(
+        new maplibregl.NavigationControl({ showCompass: false }),
+        'top-right'
+      );
+
+      const popup = new maplibregl.Popup({
+        offset: 28,
+        closeButton: false,
+        closeOnClick: false,
+      }).setHTML(`
+        <div style="font-family:'DM Sans',sans-serif">
+          <p style="font-weight:600;font-size:13px;color:#1A2E44;margin-bottom:3px">Alessandro Mendes</p>
+          <p style="font-size:12px;color:#6B7A8D">Av. Paraná, 242 — Zona 07</p>
+          <p style="font-size:12px;color:#6B7A8D">Maringá, PR</p>
+        </div>
+      `);
+
+      const marker = new maplibregl.Marker({ color: '#B87352' })
+        .setLngLat([LNG, LAT])
+        .setPopup(popup)
+        .addTo(map);
+
+      map.on('load', () => marker.togglePopup());
+
+    }, { threshold: 0.2 });
+
+    obs.observe(container);
+  })();
+</script>
+
+</body>
+</html>
